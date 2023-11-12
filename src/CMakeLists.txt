@@ -3,9 +3,12 @@ project(api)
 set(ASIO_VERSION 1.28.1)
 set(BOOST_VERSION 1.83.0)
 
-include_directories(include /opt/homebrew/Cellar/asio/${ASIO_VERSION}/include /opt/homebrew/Cellar/boost/${BOOST_VERSION}/include)
+include_directories(/opt/homebrew/Cellar/asio/${ASIO_VERSION}/include /opt/homebrew/Cellar/boost/${BOOST_VERSION}/include)
+
 
 include(FetchContent)
+
+# Google Fruit
 FetchContent_Declare(
         fruit
         GIT_REPOSITORY https://github.com/google/fruit.git
@@ -17,11 +20,32 @@ FetchContent_GetProperties(fruit)
 if (NOT fruit_POPULATED)
     FetchContent_Populate(fruit)
     add_subdirectory(${fruit_SOURCE_DIR} ${fruit_BINARY_DIR})
-endif()
+endif ()
+
+# Crow
+FetchContent_Declare(
+        crow
+        GIT_REPOSITORY https://github.com/CrowCpp/Crow.git
+        GIT_TAG edf12f699ec3bf6f751cf73cb97f32919e48ca6e #v.1.0+5 Security Patch
+)
+
+FetchContent_MakeAvailable(crow)
+FetchContent_GetProperties(crow)
+if (NOT crow_POPULATED)
+    FetchContent_Populate(crow)
+    add_subdirectory(${crow_SOURCE_DIR} ${crow_BINARY_DIR})
+endif ()
 
 
-add_executable(api main.cpp)
+add_library(api core/ISecretsManager.h
+        core/Result.h)
+add_executable(apiRunner main.cpp)
 
 
-target_link_libraries(api PRIVATE pthread fruit)
+set_target_properties(api PROPERTIES LINKER_LANGUAGE CXX)
+
+
+target_link_libraries(api PRIVATE pthread fruit Crow::Crow)
 target_include_directories(api PUBLIC ${fruit_SOURCE_DIR}/include ${fruit_BINARY_DIR}/include)
+
+target_link_libraries(apiRunner PRIVATE pthread fruit Crow::Crow api)

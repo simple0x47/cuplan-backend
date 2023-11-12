@@ -12,10 +12,12 @@ FetchContent_MakeAvailable(googletest)
 enable_testing()
 
 
-add_executable(test example.cpp)
+add_executable(test example.cpp
+        core/ResultTest.cpp)
 
 
-target_link_libraries(test GTest::gtest_main)
+target_link_libraries(test GTest::gtest_main api)
+target_include_directories(test PRIVATE ${CMAKE_SOURCE_DIR}/src)
 
 include(GoogleTest)
 gtest_discover_tests(test)
