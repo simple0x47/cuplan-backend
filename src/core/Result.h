@@ -19,7 +19,7 @@ class Result {
       throw std::logic_error("unwrapped a non-successful result");
     }
 
-    return *_ok.get();
+    return *_ok;
   }
 
   /// \brief Tries to unwrap the TError type. IF the result is not an error, it will throw a logic_error() exception.
@@ -29,7 +29,7 @@ class Result {
       throw std::logic_error("unwrapped error on a successful result");
     }
 
-    return *_error.get();
+    return *_error;
   }
 
   /// \brief Creates an instance of Result which indicates a successful operation.
