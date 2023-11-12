@@ -38,7 +38,8 @@ endif ()
 
 
 add_library(api core/ISecretsManager.h
-        core/Result.h)
+        core/Result.h
+        core/Error.h)
 add_executable(apiRunner main.cpp)
 
 

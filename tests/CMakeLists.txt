@@ -13,7 +13,8 @@ enable_testing()
 
 
 add_executable(test example.cpp
-        core/ResultTest.cpp)
+        core/ResultTest.cpp
+        core/ErrorTest.cpp)
 
 
 target_link_libraries(test GTest::gtest_main api)
