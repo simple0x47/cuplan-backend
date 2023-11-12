@@ -10,7 +10,7 @@ TEST(ErrorTest, ErrorKind_ExpectedErrorKind) {
 
   Error error = Error(std::move(errorKind), std::move(message));
 
-  ASSERT_EQ(expectedErrorKind, *error.errorKind().get());
+  ASSERT_EQ(expectedErrorKind, *error.errorKind());
 }
 
 TEST(ErrorTest, Message_ExpectedMessage) {
@@ -21,7 +21,7 @@ TEST(ErrorTest, Message_ExpectedMessage) {
 
   Error error = Error(std::move(errorKind), std::move(message));
 
-  ASSERT_EQ(expectedMessage, *error.message().get());
+  ASSERT_EQ(expectedMessage, *error.message());
 }
 
 TEST(ErrorTest, ErrorKind_NullAfterMove) {
