@@ -114,6 +114,22 @@ jobs:
           asset_path: ./api.zip
           asset_name: api.zip
           asset_content_type: application/zip
+      - name: Unzip artifact
+        run: |
+          unzip api.zip
+      - name: Checkout Dockerfile
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            Dockerfile
+          sparse-checkout-cone-mode: false
+      - name: Build Docker image
+        run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -t gabriel0simpleg/cp-api:${{ vars.MAJOR_VERSION }}.${{ vars.MINOR_VERSION }}.${{ env.PATCH_VERSION }} .
+          docker tag gabriel0simpleg/cp-api:${{ vars.MAJOR_VERSION }}.${{ vars.MINOR_VERSION }}.${{ env.PATCH_VERSION }} gabriel0simpleg/cp-api:latest
+          docker push gabriel0simpleg/cp-api:${{ vars.MAJOR_VERSION }}.${{ vars.MINOR_VERSION }}.${{ env.PATCH_VERSION }}
+          docker push gabriel0simpleg/cp-api:latest
   clean:
     if: success() || failure()
 
