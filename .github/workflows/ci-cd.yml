@@ -1,0 +1,125 @@
+name: CI/CD
+
+on:
+  push:
+  pull_request:
+
+env:
+  ARTIFACT_NAME: "le_baguette"
+  SECRETS_MANAGER_ACCESS_TOKEN: ${{ secrets.SECRETS_MANAGER_ACCESS_TOKEN }}
+  PATCH_VERSION: ${{ github.run_number }}
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      src: ${{ steps.filter.outputs.src }}
+      test: ${{ steps.filter.outputs.test }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            src:
+              - 'src/**'
+              - 'CMakeLists.txt'
+            test:
+              - 'tests/**'
+              - '.github/workflows/ci-cd.yml'
+  ci:
+    needs: changes
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 10
+    if: ${{ needs.changes.outputs.src == 'true' || needs.changes.outputs.test == 'true' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+          token: ${{ secrets.TOKEN }}
+      - name: Replace placeholder version
+        run: |
+          sed -i 's/5123.0.0/${{ vars.MAJOR_VERSION }}.${{ vars.MINOR_VERSION }}.${{ env.PATCH_VERSION }}/' ./src/CMakeLists.txt
+      - name: Run tests
+        run: |
+          mkdir bin
+          cd bin
+          curl -LO https://github.com/bitwarden/sdk/releases/download/bws-v0.3.0/bws-x86_64-unknown-linux-gnu-0.3.0.zip
+          unzip bws-x86_64-unknown-linux-gnu-0.3.0.zip
+          chmod +x bws
+          export PATH=$PATH:$PWD
+          cd ../
+          mkdir cmake-build-debug
+          cd cmake-build-debug
+          cmake -DCMAKE_BUILD_TYPE=Debug ..
+          cd ../
+          cmake --build ./cmake-build-debug --target all -j 6
+          cd cmake-build-debug
+          cd tests
+          ./test
+          cd ../../
+      - name: Build release & package
+        run: |
+          mkdir cmake-build-release
+          cd cmake-build-release
+          cmake -DCMAKE_BUILD_TYPE=Release ..
+          cd ../
+          cmake --build ./cmake-build-release --target all -j 6
+          cd cmake-build-release/src
+          zip api.zip apiRunner config.Development.json config.Production.json libapi.so
+      - name: Upload binaries as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ./cmake-build-release/src/api.zip
+  cd:
+    needs: ci
+    if: ${{ needs.changes.outputs.src == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
+          path: ./
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          PATCH_VERSION: ${{ github.run_number }}
+        with:
+          tag_name: v${{ vars.MAJOR_VERSION }}.${{ vars.MINOR_VERSION }}.${{ env.PATCH_VERSION }}
+          release_name: v${{ vars.MAJOR_VERSION }}.${{ vars.MINOR_VERSION }}.${{ env.PATCH_VERSION }}
+          draft: false
+          prerelease: false
+      - name: Upload release asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./api.zip
+          asset_name: api.zip
+          asset_content_type: application/zip
+  clean:
+    if: success() || failure()
+
+    needs: cd
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Remove artifact
+        uses: geekyeggo/delete-artifact@v2
+        with:
+          name: ${{ env.ARTIFACT_NAME }}
