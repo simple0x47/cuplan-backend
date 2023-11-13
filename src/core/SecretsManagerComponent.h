@@ -7,8 +7,7 @@
 #include "ISecretsManager.h"
 
 using SecretsManagerFactory =
-    std::function<std::unique_ptr<core::ISecretsManager>(
-        std::unique_ptr<std::string>*)>;
+    std::function<std::unique_ptr<core::ISecretsManager>(std::string)>;
 
 inline fruit::Component<SecretsManagerFactory> getSecretsManagerComponent() {
   return fruit::createComponent()

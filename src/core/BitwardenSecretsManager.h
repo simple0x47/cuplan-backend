@@ -10,15 +10,13 @@ namespace core {
 /// located within the PATH environment variable.
 class BitwardenSecretsManager final : public ISecretsManager {
  public:
-  INJECT(BitwardenSecretsManager(ASSISTED(std::unique_ptr<std::string>*)
-                                     accessToken));
+  INJECT(BitwardenSecretsManager(ASSISTED(std::string) accessToken));
   ~BitwardenSecretsManager() override = default;
 
-  Result<std::string, Error> getSecret(
-      std::unique_ptr<std::string> secretId) override;
+  Result<std::string, Error> getSecret(std::string secretId) override;
 
  private:
-  std::unique_ptr<std::string> _accessToken;
+  std::string _accessToken;
 };
 
 }  // namespace core

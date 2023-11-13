@@ -9,20 +9,14 @@
 #include "ErrorKind.h"
 
 namespace core {
-BitwardenSecretsManager::BitwardenSecretsManager(
-    std::unique_ptr<std::string>* accessToken) {
-  _accessToken = std::move(*accessToken);
+BitwardenSecretsManager::BitwardenSecretsManager(std::string accessToken) {
+  _accessToken = std::move(accessToken);
 }
 
 Result<std::string, Error> BitwardenSecretsManager::getSecret(
-    const std::unique_ptr<std::string> secretId) {
-  if (secretId == nullptr) {
-    return Result<std::string, Error>::err(std::make_unique<Error>(
-        Error(INVALID_SECRET_ID, "'secretId' is a nullptr.")));
-  }
-
+    const std::string secretId) {
   const std::string command =
-      "bws secret get " + *secretId + " --access-token " + *_accessToken;
+      "bws secret get " + secretId + " --access-token " + _accessToken;
   std::array<char, 256> buffer{};
   std::string result;
   FILE* pipe = popen(command.c_str(), "r");

@@ -10,8 +10,7 @@ namespace core {
 class ISecretsManager {
  public:
   virtual ~ISecretsManager() = default;
-  virtual Result<std::string, Error> getSecret(
-      std::unique_ptr<std::string> secretId) = 0;
+  virtual Result<std::string, Error> getSecret(std::string secretId) = 0;
 };
 }  // namespace core
 
