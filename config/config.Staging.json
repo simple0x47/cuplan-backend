@@ -1,0 +1,12 @@
+{
+  "Server": {
+    "Port": 443,
+    "Ssl": {
+      "FullChain": "/etc/cuplan/fullchain.pem",
+      "Key": "/etc/cuplan/privkey.pem"
+    }
+  },
+  "SecretsManager": {
+    "TestSecretId": "7c1d5dfd-a58b-47cf-bee5-b0a600fe50c9"
+  }
+}
