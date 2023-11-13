@@ -28,6 +28,7 @@ jobs:
               - 'src/**'
               - 'CMakeLists.txt'
               - '.github/workflows/ci-cd.yml'
+              - 'Dockerfile'
             test:
               - 'tests/**'
   ci:
