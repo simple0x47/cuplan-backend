@@ -27,9 +27,9 @@ jobs:
             src:
               - 'src/**'
               - 'CMakeLists.txt'
+              - '.github/workflows/ci-cd.yml'
             test:
               - 'tests/**'
-              - '.github/workflows/ci-cd.yml'
   ci:
     needs: changes
     runs-on: ubuntu-latest
@@ -39,9 +39,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          submodules: true
-          token: ${{ secrets.TOKEN }}
       - name: Replace placeholder version
         run: |
           sed -i 's/5123.0.0/${{ vars.MAJOR_VERSION }}.${{ vars.MINOR_VERSION }}.${{ env.PATCH_VERSION }}/' ./src/CMakeLists.txt
