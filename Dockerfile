@@ -5,4 +5,4 @@ COPY ./apiRunner \
     ./config.Development.json \
     ./config.Production.json \
     ./
-ENTRYPOINT ["apiRunner"]
+ENTRYPOINT ["./apiRunner"]
