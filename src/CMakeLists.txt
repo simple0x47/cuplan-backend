@@ -46,7 +46,7 @@ if (NOT json_POPULATED)
     add_subdirectory(${json_SOURCE_DIR} ${json_BINARY_DIR})
 endif ()
 
-add_library(api core/ISecretsManager.h
+add_library(api STATIC core/ISecretsManager.h
         core/Result.h
         core/Error.h
         core/BitwardenSecretsManager.cpp
@@ -69,7 +69,7 @@ target_link_libraries(api PRIVATE pthread fruit Crow::Crow nlohmann_json)
 target_include_directories(api PUBLIC ${fruit_SOURCE_DIR}/include ${fruit_BINARY_DIR}/include
         ${json_SOURCE_DIR}/include)
 
-target_link_libraries(apiRunner PRIVATE pthread fruit Crow::Crow api)
+target_link_libraries(apiRunner PRIVATE fruit Crow::Crow api)
 
 file(COPY ${CMAKE_SOURCE_DIR}/config/ DESTINATION ${CMAKE_BINARY_DIR}/src)
 file(COPY ${CMAKE_SOURCE_DIR}/ssl/ DESTINATION ${CMAKE_BINARY_DIR}/src)
