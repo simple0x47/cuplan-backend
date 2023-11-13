@@ -2,7 +2,6 @@
 
 #include "../test_base.h"
 #include "core/ConfigurationReader.h"
-#include "core/Constants.h"
 
 TEST(ConfigurationReaderTest, Read_DevelopmentEnvironment_ReturnsExpectedJson) {
   const std::string expectedValue = "le test :)";
