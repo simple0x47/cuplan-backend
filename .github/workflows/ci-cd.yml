@@ -37,6 +37,9 @@ jobs:
     timeout-minutes: 10
     if: ${{ needs.changes.outputs.src == 'true' || needs.changes.outputs.test == 'true' }}
     steps:
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@master
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Replace placeholder version
