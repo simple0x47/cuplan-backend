@@ -3,7 +3,9 @@ project(api VERSION 5123.0.0)
 set(ASIO_VERSION 1.28.1)
 set(BOOST_VERSION 1.83.0)
 
-include_directories(/opt/homebrew/Cellar/asio/${ASIO_VERSION}/include /opt/homebrew/Cellar/boost/${BOOST_VERSION}/include)
+if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    include_directories(/opt/homebrew/Cellar/asio/${ASIO_VERSION}/include /opt/homebrew/Cellar/boost/${BOOST_VERSION}/include)
+endif ()
 
 
 include(FetchContent)
