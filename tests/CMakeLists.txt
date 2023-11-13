@@ -12,9 +12,11 @@ FetchContent_MakeAvailable(googletest)
 enable_testing()
 
 
-add_executable(test example.cpp
+add_executable(test
         core/ResultTest.cpp
-        core/ErrorTest.cpp)
+        core/ErrorTest.cpp
+        core/BitwardenSecretsManagerTest.cpp
+        core/ConfigurationReaderTest.cpp)
 
 
 target_link_libraries(test GTest::gtest_main api)
@@ -22,3 +24,5 @@ target_include_directories(test PRIVATE ${CMAKE_SOURCE_DIR}/src)
 
 include(GoogleTest)
 gtest_discover_tests(test)
+
+file(COPY ${CMAKE_SOURCE_DIR}/config/ DESTINATION ${CMAKE_BINARY_DIR}/tests)

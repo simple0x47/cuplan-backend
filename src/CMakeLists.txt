@@ -36,17 +36,40 @@ if (NOT crow_POPULATED)
     add_subdirectory(${crow_SOURCE_DIR} ${crow_BINARY_DIR})
 endif ()
 
+# JSON
+FetchContent_Declare(
+        json
+        GIT_REPOSITORY https://github.com/nlohmann/json.git
+        GIT_TAG bc889afb4c5bf1c0d8ee29ef35eaaf4c8bef8a5d #v.3.11.2
+)
+
+FetchContent_MakeAvailable(json)
+FetchContent_GetProperties(json)
+if (NOT json_POPULATED)
+    FetchContent_Populate(json)
+    add_subdirectory(${json_SOURCE_DIR} ${json_BINARY_DIR})
+endif ()
 
 add_library(api core/ISecretsManager.h
         core/Result.h
-        core/Error.h)
+        core/Error.h
+        core/BitwardenSecretsManager.cpp
+        core/BitwardenSecretsManager.h
+        core/ErrorKind.h
+        core/ConfigurationReader.cpp
+        core/ConfigurationReader.h
+        core/Constants.h
+)
 add_executable(apiRunner main.cpp)
 
 
 set_target_properties(api PROPERTIES LINKER_LANGUAGE CXX)
 
 
-target_link_libraries(api PRIVATE pthread fruit Crow::Crow)
-target_include_directories(api PUBLIC ${fruit_SOURCE_DIR}/include ${fruit_BINARY_DIR}/include)
+target_link_libraries(api PRIVATE pthread fruit Crow::Crow nlohmann_json)
+target_include_directories(api PUBLIC ${fruit_SOURCE_DIR}/include ${fruit_BINARY_DIR}/include
+        ${json_SOURCE_DIR}/include)
 
 target_link_libraries(apiRunner PRIVATE pthread fruit Crow::Crow api)
+
+file(COPY ${CMAKE_SOURCE_DIR}/config/ DESTINATION ${CMAKE_BINARY_DIR}/src)

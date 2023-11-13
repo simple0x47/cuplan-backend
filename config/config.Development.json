@@ -1,0 +1,8 @@
+{
+  "SecretsManager": {
+    "TestSecretId": "7c1d5dfd-a58b-47cf-bee5-b0a600fe50c9"
+  },
+  "ConfigurationReader": {
+    "Test": "le test :)"
+  }
+}
