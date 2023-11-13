@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include "core/Error.h"
 #include "core/Result.h"
 
 TEST(ResultTest, Unwrap_SuccessfulResult_ExpectedValue) {
@@ -43,4 +44,17 @@ TEST(ResultTest, UnwrapErr_SuccessfulResult_ThrowsException) {
       core::Result<int, char>::ok(std::move(example));
 
   ASSERT_THROW(result.unwrapErr(), std::logic_error);
+}
+
+TEST(ResultTest, UnwrapErr_UnsuccessfulResult_ReturnsError) {
+  const std::string expectedErrorKind = "example";
+  const std::string expectedMessage = "this is the error message";
+  Error error("example", "this is the error message");
+  core::Result<std::string, Error> result =
+      core::Result<std::string, Error>::err(std::make_unique<Error>(error));
+
+  Error resultError = result.unwrapErr();
+
+  ASSERT_EQ(expectedErrorKind, resultError.errorKind());
+  ASSERT_EQ(expectedMessage, resultError.message());
 }
