@@ -1,9 +1,7 @@
 #include <array>
 #include <cstdio>
 #include <iostream>
-#include <memory>
 #include <nlohmann/json.hpp>
-#include <stdexcept>
 #include <string>
 
 #include "BitwardenSecretsManager.h"
@@ -24,11 +22,11 @@ Result<std::string, Error> BitwardenSecretsManager::getSecret(
               std::make_unique<std::string>("'secretId' is a nullptr."))));
   }
 
-  std::string command =
+  const std::string command =
       "bws secret get " + *secretId + " --access-token " + *_accessToken;
-  std::array<char, 256> buffer;
+  std::array<char, 256> buffer{};
   std::string result;
-  std::shared_ptr<FILE> pipe(popen(command.c_str(), "r"), pclose);
+  const std::shared_ptr<FILE> pipe(popen(command.c_str(), "r"), pclose);
 
   if (!pipe) {
     return Result<std::string, Error>::err(std::make_unique<Error>(
