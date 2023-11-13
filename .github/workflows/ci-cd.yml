@@ -74,7 +74,7 @@ jobs:
           cd ../
           cmake --build ./cmake-build-release --target all -j 6
           cd cmake-build-release/src
-          zip api.zip apiRunner config.Development.json config.Production.json libapi.so
+          zip api.zip apiRunner config.Development.json config.Staging.json config.Production.json
       - name: Upload binaries as artifact
         uses: actions/upload-artifact@v3
         with:
