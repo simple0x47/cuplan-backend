@@ -1,4 +1,4 @@
-project(api)
+project(api VERSION 5123.0.0)
 
 set(ASIO_VERSION 1.28.1)
 set(BOOST_VERSION 1.83.0)
