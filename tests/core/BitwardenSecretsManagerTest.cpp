@@ -14,10 +14,12 @@ TEST(BitwardenSecretsManagerTest, GetSecret_ExampleSecretId_SecretValue) {
   const std::string accessToken =
       std::getenv(core::SECRETS_MANAGER_ACCESS_TOKEN_ENV);
   const std::string secretId =
-      configReader.read().unwrap()["SecretsManager"]["TestSecretId"];
+      (*configReader.read().unwrap())["SecretsManager"]["TestSecretId"];
+  std::unique_ptr<std::string> accessTokenPointer =
+      std::make_unique<std::string>(accessToken);
 
   core::BitwardenSecretsManager secretsManager =
-      core::BitwardenSecretsManager(std::make_unique<std::string>(accessToken));
+      core::BitwardenSecretsManager(&accessTokenPointer);
 
   core::Result<std::string, Error> result =
       secretsManager.getSecret(std::make_unique<std::string>(secretId));

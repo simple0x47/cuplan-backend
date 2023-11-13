@@ -1,14 +1,17 @@
 #ifndef BITWARDENSECRETSMANAGER_H
 #define BITWARDENSECRETSMANAGER_H
+#include <fruit/fruit.h>
+
 #include "ISecretsManager.h"
 
 namespace core {
 
 /// \brief User of Bitwarden's secrets manager CLI. The program 'bws' must be
 /// located within the PATH environment variable.
-class BitwardenSecretsManager final : ISecretsManager {
+class BitwardenSecretsManager final : public ISecretsManager {
  public:
-  BitwardenSecretsManager(std::unique_ptr<std::string> accessToken);
+  INJECT(BitwardenSecretsManager(ASSISTED(std::unique_ptr<std::string>*)
+                                     accessToken));
   ~BitwardenSecretsManager() override = default;
 
   Result<std::string, Error> getSecret(

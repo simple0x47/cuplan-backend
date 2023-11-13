@@ -59,6 +59,9 @@ add_library(api core/ISecretsManager.h
         core/ConfigurationReader.cpp
         core/ConfigurationReader.h
         core/Constants.h
+        core/SecretsManagerComponent.h
+        init.cpp
+        init.h
 )
 add_executable(apiRunner main.cpp)
 
