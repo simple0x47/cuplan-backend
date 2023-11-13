@@ -1,7 +1,7 @@
+#include "ConfigurationReader.h"
+
 #include <fstream>
 #include <utility>
-
-#include "ConfigurationReader.h"
 
 namespace core {
 ConfigurationReader::ConfigurationReader(std::string environment) {

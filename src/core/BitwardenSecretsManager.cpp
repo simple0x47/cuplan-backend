@@ -1,10 +1,10 @@
+#include "BitwardenSecretsManager.h"
+
 #include <array>
 #include <cstdio>
 #include <iostream>
 #include <nlohmann/json.hpp>
 #include <string>
-
-#include "BitwardenSecretsManager.h"
 
 #include "ErrorKind.h"
 

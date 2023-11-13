@@ -14,4 +14,4 @@ inline fruit::Component<SecretsManagerFactory> getSecretsManagerComponent() {
       .bind<core::ISecretsManager, core::BitwardenSecretsManager>();
 }
 
-#endif  //SECRETSMANAGERCOMPONENT_H
+#endif  // SECRETSMANAGERCOMPONENT_H

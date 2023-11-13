@@ -21,4 +21,4 @@ class BitwardenSecretsManager final : public ISecretsManager {
 
 }  // namespace core
 
-#endif  //BITWARDENSECRETSMANAGER_H
+#endif  // BITWARDENSECRETSMANAGER_H

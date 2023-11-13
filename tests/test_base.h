@@ -7,4 +7,4 @@ inline core::ConfigurationReader getConfigurationReader() {
   return core::ConfigurationReader(core::DEVELOPMENT_ENVIRONMENT);
 }
 
-#endif  //TESTBASE_H
+#endif  // TESTBASE_H

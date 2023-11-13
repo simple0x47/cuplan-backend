@@ -21,4 +21,4 @@ class ConfigurationReader {
 };
 }  // namespace core
 
-#endif  //CONFIGURATIONREADER_H
+#endif  // CONFIGURATIONREADER_H

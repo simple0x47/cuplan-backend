@@ -20,4 +20,4 @@ class Error {
   std::string _message;
 };
 
-#endif  //ERROR_H
+#endif  // ERROR_H

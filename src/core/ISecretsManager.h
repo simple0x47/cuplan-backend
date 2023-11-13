@@ -14,4 +14,4 @@ class ISecretsManager {
 };
 }  // namespace core
 
-#endif  //ISECRETSMANAGER_H
+#endif  // ISECRETSMANAGER_H
