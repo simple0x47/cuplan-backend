@@ -2,22 +2,22 @@
 #define ERROR_H
 
 #include <string>
+#include <utility>
 
 class Error {
  public:
-  Error(std::unique_ptr<std::string> errorKind,
-        std::unique_ptr<std::string> message) {
+  Error(std::string errorKind, std::string message) {
     _errorKind = std::move(errorKind);
     _message = std::move(message);
   }
 
-  std::string errorKind() { return *_errorKind; }
+  std::string errorKind() { return _errorKind; }
 
-  std::string message() { return *_message; }
+  std::string message() { return _message; }
 
  private:
-  std::unique_ptr<std::string> _errorKind;
-  std::unique_ptr<std::string> _message;
+  std::string _errorKind;
+  std::string _message;
 };
 
 #endif  //ERROR_H
