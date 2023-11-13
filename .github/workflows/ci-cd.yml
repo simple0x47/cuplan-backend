@@ -47,7 +47,7 @@ jobs:
           sed -i 's/5123.0.0/${{ vars.MAJOR_VERSION }}.${{ vars.MINOR_VERSION }}.${{ env.PATCH_VERSION }}/' ./src/CMakeLists.txt
       - name: Install dependencies
         run: |
-          brew install asio@1.28.1 boost@1.83.0
+          brew install asio boost
       - name: Run tests
         run: |
           mkdir bin
