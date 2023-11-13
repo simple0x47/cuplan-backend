@@ -1,9 +1,9 @@
 {
   "Server": {
-    "Port": 7443,
+    "Port": 443,
     "Ssl": {
-      "FullChain": "./fullchain.pem",
-      "Key": "./privkey.pem"
+      "FullChain": "/etc/cuplan/fullchain.pem",
+      "Key": "/etc/cuplan/privkey.pem"
     }
   },
   "SecretsManager": {
