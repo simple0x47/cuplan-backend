@@ -29,5 +29,5 @@ TEST(SecretsManagerComponentTest, Injection_WorksAsExpected) {
       secretsManager->getSecret(std::move(nonExistingSecret));
 
   ASSERT_FALSE(result.isOk());
-  ASSERT_EQ(COMMAND_EXITED_WITH_NON_ZERO_CODE, result.unwrapErr()->errorKind());
+  ASSERT_EQ(COMMAND_EXITED_WITH_NON_ZERO_CODE, result.unwrapErr().errorKind());
 }

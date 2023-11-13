@@ -11,9 +11,9 @@ class Error {
     _message = std::move(message);
   }
 
-  std::unique_ptr<std::string> errorKind() { return std::move(_errorKind); }
+  std::string errorKind() { return *_errorKind; }
 
-  std::unique_ptr<std::string> message() { return std::move(_message); }
+  std::string message() { return *_message; }
 
  private:
   std::unique_ptr<std::string> _errorKind;

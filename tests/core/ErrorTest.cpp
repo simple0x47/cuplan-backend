@@ -10,7 +10,7 @@ TEST(ErrorTest, ErrorKind_ExpectedErrorKind) {
 
   Error error = Error(std::move(errorKind), std::move(message));
 
-  ASSERT_EQ(expectedErrorKind, *error.errorKind());
+  ASSERT_EQ(expectedErrorKind, error.errorKind());
 }
 
 TEST(ErrorTest, Message_ExpectedMessage) {
@@ -21,7 +21,7 @@ TEST(ErrorTest, Message_ExpectedMessage) {
 
   Error error = Error(std::move(errorKind), std::move(message));
 
-  ASSERT_EQ(expectedMessage, *error.message());
+  ASSERT_EQ(expectedMessage, error.message());
 }
 
 TEST(ErrorTest, ErrorKind_NullAfterMove) {
@@ -29,7 +29,6 @@ TEST(ErrorTest, ErrorKind_NullAfterMove) {
   std::unique_ptr<std::string> message = std::make_unique<std::string>("a");
 
   Error error = Error(std::move(errorKind), std::move(message));
-  std::unique_ptr<std::string> _ = error.errorKind();
 
   ASSERT_EQ(nullptr, error.errorKind());
 }
@@ -39,7 +38,6 @@ TEST(ErrorTest, Message_NullAfterMove) {
   std::unique_ptr<std::string> message = std::make_unique<std::string>("a");
 
   Error error = Error(std::move(errorKind), std::move(message));
-  std::unique_ptr<std::string> _ = error.message();
 
   ASSERT_EQ(nullptr, error.message());
 }

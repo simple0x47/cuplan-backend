@@ -47,8 +47,8 @@ class Result {
   }
 
  private:
-  std::unique_ptr<TOk> _ok;
-  std::unique_ptr<TError> _error;
+  std::shared_ptr<TOk> _ok;
+  std::shared_ptr<TError> _error;
   bool _success;
 
   Result(std::unique_ptr<TOk> ok, std::unique_ptr<TError> error, bool success) {

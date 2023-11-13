@@ -17,9 +17,9 @@ BitwardenSecretsManager::BitwardenSecretsManager(
 Result<std::string, Error> BitwardenSecretsManager::getSecret(
     const std::unique_ptr<std::string> secretId) {
   if (secretId == nullptr) {
-    return Result<std::string, Error>::err(
+    return Result<std::string, Error>::err(std::make_unique<Error>(
         Error(std::make_unique<std::string>(INVALID_SECRET_ID),
-              std::make_unique<std::string>("'secretId' is a nullptr.")));
+              std::make_unique<std::string>("'secretId' is a nullptr."))));
   }
 
   const std::string command =
@@ -29,9 +29,9 @@ Result<std::string, Error> BitwardenSecretsManager::getSecret(
   FILE* pipe = popen(command.c_str(), "r");
 
   if (!pipe) {
-    return Result<std::string, Error>::err(
+    return Result<std::string, Error>::err(std::make_unique<Error>(
         Error(std::make_unique<std::string>(FAILED_TO_RUN_COMMAND),
-              std::make_unique<std::string>("failed to run 'bws' command.")));
+              std::make_unique<std::string>("failed to run 'bws' command."))));
   }
 
   while (fgets(buffer.data(), buffer.size(), pipe) != nullptr) {
@@ -41,15 +41,16 @@ Result<std::string, Error> BitwardenSecretsManager::getSecret(
   const int exitCode = pclose(pipe);
 
   if (exitCode != 0) {
-    return Result<std::string, Error>::err(Error(
+    return Result<std::string, Error>::err(std::make_unique<Error>(Error(
         std::make_unique<std::string>(COMMAND_EXITED_WITH_NON_ZERO_CODE),
         std::make_unique<std::string>("'bws' exited with a non zero code: " +
-                                      result)));
+                                      result))));
   }
 
   nlohmann::json jsonResult = nlohmann::json::parse(result);
 
-  return Result<std::string, Error>::ok(jsonResult["value"]);
+  return Result<std::string, Error>::ok(
+      std::make_unique<std::string>(jsonResult["value"]));
 }
 
 }  // namespace core
