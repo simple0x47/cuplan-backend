@@ -88,6 +88,12 @@ jobs:
     timeout-minutes: 10
 
     steps:
+      - name: Checkout Dockerfile
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            Dockerfile
+          sparse-checkout-cone-mode: false
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
@@ -118,12 +124,6 @@ jobs:
         run: |
           unzip api.zip
           ls
-      - name: Checkout Dockerfile
-        uses: actions/checkout@v4
-        with:
-          sparse-checkout: |
-            Dockerfile
-          sparse-checkout-cone-mode: false
       - name: Build Docker image
         run: |
           echo $(ls)
