@@ -123,10 +123,9 @@ jobs:
       - name: Unzip artifact
         run: |
           unzip api.zip
-          ls
+          chmod +x apiRunner
       - name: Build Docker image
         run: |
-          echo $(ls)
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker build -t gabriel0simpleg/cp-api:${{ vars.MAJOR_VERSION }}.${{ vars.MINOR_VERSION }}.${{ env.PATCH_VERSION }} .
           docker tag gabriel0simpleg/cp-api:${{ vars.MAJOR_VERSION }}.${{ vars.MINOR_VERSION }}.${{ env.PATCH_VERSION }} gabriel0simpleg/cp-api:latest
