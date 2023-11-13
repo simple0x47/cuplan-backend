@@ -5,6 +5,8 @@
 namespace core {
 inline const char* DEVELOPMENT_ENVIRONMENT = "Development";
 
+inline const char* CUPLAN_ENVIRONMENT_ENV = "CUPLAN_ENVIRONMENT";
+
 inline const char* SECRETS_MANAGER_ACCESS_TOKEN_ENV =
     "SECRETS_MANAGER_ACCESS_TOKEN";
 }  // namespace core

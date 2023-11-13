@@ -30,6 +30,8 @@ if (NOT crow_POPULATED)
     add_subdirectory(${crow_SOURCE_DIR} ${crow_BINARY_DIR})
 endif ()
 
+set(CROW_FEATURES ssl)
+
 # JSON
 FetchContent_Declare(
         json
@@ -54,6 +56,8 @@ add_library(api core/ISecretsManager.h
         core/ConfigurationReader.h
         core/Constants.h
         core/SecretsManagerComponent.h
+        routes.h
+        routes.cpp
 )
 add_executable(apiRunner main.cpp)
 
@@ -68,3 +72,4 @@ target_include_directories(api PUBLIC ${fruit_SOURCE_DIR}/include ${fruit_BINARY
 target_link_libraries(apiRunner PRIVATE pthread fruit Crow::Crow api)
 
 file(COPY ${CMAKE_SOURCE_DIR}/config/ DESTINATION ${CMAKE_BINARY_DIR}/src)
+file(COPY ${CMAKE_SOURCE_DIR}/ssl/ DESTINATION ${CMAKE_BINARY_DIR}/src)

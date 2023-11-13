@@ -1,4 +1,11 @@
 {
+  "Server": {
+    "Port": 7443,
+    "Ssl": {
+      "FullChain": "./fullchain.pem",
+      "Key": "./privkey.pem"
+    }
+  },
   "SecretsManager": {
     "TestSecretId": "7c1d5dfd-a58b-47cf-bee5-b0a600fe50c9"
   },
