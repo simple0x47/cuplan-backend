@@ -1,6 +1,5 @@
 #include "TestBase.h"
 
-#include "core/Empty.h"
 #include "core/ErrorKind.h"
 
 #include <csignal>
@@ -11,7 +10,8 @@
 core::Result<pid_t, Error> initializeNewEnvironment();
 
 void TestBase::SetUp() {
-  core::Result<pid_t, Error> apiRunnerProcessId = initializeNewEnvironment();
+  const core::Result<pid_t, Error> apiRunnerProcessId =
+      initializeNewEnvironment();
 
   if (!apiRunnerProcessId.isOk()) {
     Error error = apiRunnerProcessId.unwrapErr();
