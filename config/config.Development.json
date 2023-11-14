@@ -4,6 +4,9 @@
     "Ssl": {
       "FullChain": "./fullchain.pem",
       "Key": "./privkey.pem"
+    },
+    "CORS": {
+      "Origin": "http://localhost:4200"
     }
   },
   "SecretsManager": {

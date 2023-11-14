@@ -3,6 +3,7 @@
 #include "routes.h"
 
 #include <crow.h>
+#include <crow/middlewares/cors.h>
 
 #include <iostream>
 
@@ -22,6 +23,9 @@ int main() {
   crow::SimpleApp app;
 
   initializeRoutes(app);
+
+  auto &cors = app.get_middleware<crow::CORSHandler>();
+  cors.global().origin(config["Server"]["CORS"]["Origin"]);
 
   app.ssl_chainfile(config["Server"]["Ssl"]["FullChain"],
                     config["Server"]["Ssl"]["Key"])
