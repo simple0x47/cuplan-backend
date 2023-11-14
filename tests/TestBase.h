@@ -2,14 +2,20 @@
 #define TESTBASE_H
 #include "core/ConfigurationReader.h"
 #include "core/Constants.h"
-#include "core/Empty.h"
+
+#include <gtest/gtest.h>
 
 inline core::ConfigurationReader getConfigurationReader() {
   return core::ConfigurationReader(core::DEVELOPMENT_ENVIRONMENT);
 }
 
-/// \brief Prepares all the dependencies and resets their state, so they act
-/// as a new environment for every integration test.
-core::Result<Empty, Error> initializeNewEnvironment();
+class TestBase : public testing::Test {
+protected:
+  void SetUp() override;
+  void TearDown() override;
+
+private:
+  pid_t _apiRunnerProcessId = -1;
+};
 
 #endif // TESTBASE_H

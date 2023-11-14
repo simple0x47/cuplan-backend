@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "../test_base.h"
+#include "../TestBase.h"
 #include "core/ConfigurationReader.h"
 
 TEST(ConfigurationReaderTest, Read_DevelopmentEnvironment_ReturnsExpectedJson) {
