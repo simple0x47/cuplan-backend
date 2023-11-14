@@ -56,7 +56,8 @@ add_executable(test
         core/BitwardenSecretsManagerTest.cpp
         core/ConfigurationReaderTest.cpp
         core/SecretsManagerComponentTest.cpp
-        test_base.h)
+        test_base.h
+        test_base.cpp)
 
 
 target_link_libraries(test GTest::gtest_main api fruit Crow::Crow nlohmann_json)
