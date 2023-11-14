@@ -7,7 +7,7 @@
 #include <unistd.h>
 
 core::Result<Empty, Error> initializeNewEnvironment() {
-  pid_t scriptId = fork();
+  const pid_t scriptId = fork();
 
   if (scriptId == -1) {
     return core::Result<Empty, Error>::err(std::make_unique<Error>(Error(
@@ -15,10 +15,10 @@ core::Result<Empty, Error> initializeNewEnvironment() {
   }
 
   if (scriptId == 0) {
-    std::filesystem::path rootDir =
+    const std::filesystem::path rootDir =
         std::filesystem::current_path().parent_path().parent_path();
-    std::string composeDir = rootDir.string() + "/compose/";
-    std::string bashScript = composeDir + "dev.sh";
+    const std::string composeDir = rootDir.string() + "/compose/";
+    const std::string bashScript = composeDir + "dev.sh";
 
     execl("/bin/bash", "/bin/bash", bashScript.c_str(), composeDir.c_str());
 
@@ -37,7 +37,7 @@ core::Result<Empty, Error> initializeNewEnvironment() {
 }
 
 TEST(TestBase, InitializeNewEnvironment_Succeeds) {
-  core::Result<Empty, Error> result = initializeNewEnvironment();
+  const core::Result<Empty, Error> result = initializeNewEnvironment();
 
   ASSERT_TRUE(result.isOk());
 }
