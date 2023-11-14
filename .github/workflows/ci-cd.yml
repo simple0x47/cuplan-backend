@@ -147,6 +147,8 @@ jobs:
           cd ../
           chmod +x cd.sh
           ./cd.sh
+        env:
+          SSH_CONNECTION: ${{ vars.SSH_CONNECTION }}
   clean:
     if: success() || failure()
 
