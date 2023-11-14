@@ -2,7 +2,8 @@ name: CI/CD
 
 on:
   push:
-  pull_request:
+    branches:
+      - main
 
 env:
   ARTIFACT_NAME: "le_baguette"

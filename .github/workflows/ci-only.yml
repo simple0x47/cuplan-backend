@@ -1,0 +1,58 @@
+name: CI/CD
+
+on:
+  push:
+    branches-ignore:
+      - main
+  pull_request:
+
+env:
+  SECRETS_MANAGER_ACCESS_TOKEN: ${{ secrets.SECRETS_MANAGER_ACCESS_TOKEN }}
+  PATCH_VERSION: ${{ github.run_number }}
+
+jobs:
+  ci:
+    needs: changes
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 10
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+          token: ${{ secrets.TOKEN }}
+      - name: Set up Homebrew
+        id: set-up-homebrew
+        uses: Homebrew/actions/setup-homebrew@master
+      - name: Replace placeholder version
+        run: |
+          sed -i 's/5123.0.0/${{ vars.MAJOR_VERSION }}.${{ vars.MINOR_VERSION }}.${{ env.PATCH_VERSION }}/' ./src/CMakeLists.txt
+      - name: Install dependencies
+        run: |
+          brew install asio boost
+      - name: Run tests
+        run: |
+          mkdir bin
+          cd bin
+          curl -LO https://github.com/bitwarden/sdk/releases/download/bws-v0.3.0/bws-x86_64-unknown-linux-gnu-0.3.0.zip
+          unzip bws-x86_64-unknown-linux-gnu-0.3.0.zip
+          chmod +x bws
+          export PATH=$PATH:$PWD
+          cd ../
+          mkdir cmake-build-debug
+          cd cmake-build-debug
+          cmake -DCMAKE_BUILD_TYPE=Debug ..
+          cd ../
+          cmake --build ./cmake-build-debug --target all -j 6
+          cd cmake-build-debug
+          cd tests
+          ./test
+          cd ../../
+      - name: Build release & package
+        run: |
+          mkdir cmake-build-release
+          cd cmake-build-release
+          cmake -DCMAKE_BUILD_TYPE=Release ..
+          cd ../
+          cmake --build ./cmake-build-release --target all -j 6
