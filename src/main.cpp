@@ -20,7 +20,7 @@ int main() {
 
   nlohmann::json config = result.unwrap();
 
-  crow::SimpleApp app;
+  crow::App<crow::CORSHandler> app;
 
   initializeRoutes(app);
 
