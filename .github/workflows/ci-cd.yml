@@ -97,6 +97,7 @@ jobs:
         with:
           sparse-checkout: |
             Dockerfile
+            cd.sh
           sparse-checkout-cone-mode: false
       - name: Download artifact
         uses: actions/download-artifact@v3
@@ -137,6 +138,7 @@ jobs:
           docker push gabriel0simpleg/cp-api:latest
       - name: Deploy changes on server
         run: |
+          chmod +x cd.sh
           ./cd.sh
   clean:
     if: success() || failure()
