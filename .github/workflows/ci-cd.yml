@@ -28,10 +28,10 @@ jobs:
             src:
               - 'src/**'
               - 'CMakeLists.txt'
-              - '.github/workflows/ci-cd.yml'
               - 'Dockerfile'
             test:
               - 'tests/**'
+              - '.github/workflows/ci-cd.yml'
   ci:
     needs: changes
     runs-on: ubuntu-latest
