@@ -38,11 +38,14 @@ jobs:
     timeout-minutes: 10
     if: ${{ needs.changes.outputs.src == 'true' || needs.changes.outputs.test == 'true' }}
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+          token: ${{ secrets.TOKEN }}
       - name: Set up Homebrew
         id: set-up-homebrew
         uses: Homebrew/actions/setup-homebrew@master
-      - name: Checkout code
-        uses: actions/checkout@v3
       - name: Replace placeholder version
         run: |
           sed -i 's/5123.0.0/${{ vars.MAJOR_VERSION }}.${{ vars.MINOR_VERSION }}.${{ env.PATCH_VERSION }}/' ./src/CMakeLists.txt
@@ -132,6 +135,9 @@ jobs:
           docker tag gabriel0simpleg/cp-api:${{ vars.MAJOR_VERSION }}.${{ vars.MINOR_VERSION }}.${{ env.PATCH_VERSION }} gabriel0simpleg/cp-api:latest
           docker push gabriel0simpleg/cp-api:${{ vars.MAJOR_VERSION }}.${{ vars.MINOR_VERSION }}.${{ env.PATCH_VERSION }}
           docker push gabriel0simpleg/cp-api:latest
+      - name: Deploy changes on server
+        run: |
+          ./cd.sh
   clean:
     if: success() || failure()
 
