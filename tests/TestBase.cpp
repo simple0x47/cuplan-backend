@@ -28,7 +28,7 @@ void TestBase::TearDown() {
     return;
   }
 
-  kill(_apiRunnerProcessId, SIGTERM);
+  kill(_apiRunnerProcessId, SIGKILL);
 }
 
 core::Result<pid_t, Error> initializeNewEnvironment() {
@@ -72,7 +72,7 @@ core::Result<pid_t, Error> initializeNewEnvironment() {
     const std::filesystem::path buildDir =
         std::filesystem::current_path().parent_path();
     const std::string apiRunnerDir = buildDir.string() + "/src/apiRunner";
-
+    std::cout << apiRunnerDir << std::endl;
     execl(apiRunnerDir.c_str(), apiRunnerDir.c_str(), nullptr);
 
     _exit(127);
@@ -95,5 +95,5 @@ TEST(TestBase, InitializeNewEnvironment_Succeeds) {
 
   ASSERT_EQ(0, kill(apiRunnerProcessId, 0));
 
-  kill(apiRunnerProcessId, SIGTERM);
+  kill(apiRunnerProcessId, SIGKILL);
 }
