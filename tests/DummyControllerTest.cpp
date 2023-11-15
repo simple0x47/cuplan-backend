@@ -5,10 +5,7 @@
 #include <thread>
 
 size_t writeCallback(void *contents, size_t size, size_t nmemb,
-                     std::string *output) {
-  const size_t totalSize = size * nmemb;
-  output->append(reinterpret_cast<char *>(contents), totalSize);
-}
+                     std::string *output);
 
 TEST_F(DummyControllerTest, ReceivesReplyCorrectly) {
   // wait for apiRunner to initialize
@@ -42,4 +39,10 @@ TEST_F(DummyControllerTest, ReceivesReplyCorrectly) {
   }
 
   curl_global_cleanup();
+}
+
+size_t writeCallback(void *contents, size_t size, size_t nmemb,
+                     std::string *output) {
+  const size_t totalSize = size * nmemb;
+  output->append(reinterpret_cast<char *>(contents), totalSize);
 }
