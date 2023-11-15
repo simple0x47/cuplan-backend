@@ -16,6 +16,7 @@
     "Test": "le test :)"
   },
   "DummyControllerTest": {
+    "SleepWaitingForApiRunner": 1,
     "Url": "https://127.0.0.1:7443"
   }
 }
