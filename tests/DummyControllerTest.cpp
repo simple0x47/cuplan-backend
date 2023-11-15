@@ -18,6 +18,8 @@ TEST_F(DummyControllerTest, ReceivesReplyCorrectly) {
   curl_global_init(CURL_GLOBAL_DEFAULT);
 
   CURL *curl = curl_easy_init();
+  std::string responseData;
+  CURLcode response = CURLE_FAILED_INIT;
 
   if (curl) {
     const std::string url = std::string(config["DummyControllerTest"]["Url"]) +
@@ -28,22 +30,29 @@ TEST_F(DummyControllerTest, ReceivesReplyCorrectly) {
 
     curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
 
-    std::string responseData;
     curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeCallback);
     curl_easy_setopt(curl, CURLOPT_WRITEDATA, &responseData);
 
-    curl_easy_perform(curl);
-
-    ASSERT_EQ(std::string("dummy"), responseData);
+    response = curl_easy_perform(curl);
 
     curl_easy_cleanup(curl);
   }
 
   curl_global_cleanup();
+
+  if (response != CURLE_OK) {
+    std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(response)
+              << std::endl;
+    FAIL();
+  }
+
+  ASSERT_EQ(std::string("dummy"), responseData);
 }
 
 size_t writeCallback(void *contents, size_t size, size_t nmemb,
                      std::string *output) {
   const size_t totalSize = size * nmemb;
-  output->append(reinterpret_cast<char *>(contents), totalSize);
+  output->append(static_cast<char *>(contents), totalSize);
+
+  return totalSize;
 }
