@@ -1,6 +1,8 @@
 #include "DummyControllerTest.h"
 
+#include <chrono>
 #include <curl/curl.h>
+#include <thread>
 
 size_t writeCallback(void *contents, size_t size, size_t nmemb,
                      std::string *output) {
@@ -9,6 +11,9 @@ size_t writeCallback(void *contents, size_t size, size_t nmemb,
 }
 
 TEST_F(DummyControllerTest, ReceivesReplyCorrectly) {
+  // wait for apiRunner to initialize
+  std::this_thread::sleep_for(std::chrono::seconds(1));
+
   core::ConfigurationReader configReader = getConfigurationReader();
   nlohmann::json config = configReader.read().unwrap();
 
