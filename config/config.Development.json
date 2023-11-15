@@ -20,5 +20,9 @@
   },
   "DummyControllerTest": {
     "SleepWaitingForApiRunner": 1
+  },
+  "AuthenticationControllerTest": {
+    "ExampleEmailSecretId": "aedb3ee8-a61e-49b7-a8e7-b0ad00d3d8a1",
+    "ExamplePasswordSecretId": "42c308ab-e698-49db-a390-b0ad00d3f23a"
   }
 }
