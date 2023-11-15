@@ -49,6 +49,27 @@ FetchContent_Declare(
         GIT_TAG bc889afb4c5bf1c0d8ee29ef35eaaf4c8bef8a5d #v.3.11.2
 )
 
+FetchContent_MakeAvailable(json)
+FetchContent_GetProperties(json)
+if (NOT json_POPULATED)
+    FetchContent_Populate(json)
+    add_subdirectory(${json_SOURCE_DIR} ${json_BINARY_DIR})
+endif ()
+
+# libcurl
+FetchContent_Declare(
+        libcurl
+        GIT_REPOSITORY https://github.com/curl/curl.git
+        GIT_TAG d755a5f7c009dd63a61b2c745180d8ba937cbfeb #v.8.4.0
+)
+
+FetchContent_MakeAvailable(libcurl)
+FetchContent_GetProperties(libcurl)
+if (NOT libcurl_POPULATED)
+    FetchContent_Populate(libcurl)
+    add_subdirectory(${libcurl_SOURCE_DIR} ${libcurl_BINARY_DIR})
+endif ()
+
 
 add_executable(test
         core/ResultTest.cpp
@@ -57,13 +78,16 @@ add_executable(test
         core/ConfigurationReaderTest.cpp
         core/SecretsManagerComponentTest.cpp
         TestBase.h
-        TestBase.cpp)
+        TestBase.cpp
+        DummyControllerTest.cpp
+        DummyControllerTest.h)
 
 
-target_link_libraries(test GTest::gtest_main api fruit Crow::Crow nlohmann_json)
+target_link_libraries(test GTest::gtest_main api fruit Crow::Crow nlohmann_json CURL::libcurl)
 target_include_directories(test PRIVATE ${CMAKE_SOURCE_DIR}/src)
 
 include(GoogleTest)
 gtest_discover_tests(test)
 
 file(COPY ${CMAKE_SOURCE_DIR}/config/ DESTINATION ${CMAKE_BINARY_DIR}/tests)
+file(COPY ${CMAKE_SOURCE_DIR}/ssl/ DESTINATION ${CMAKE_BINARY_DIR}/tests)

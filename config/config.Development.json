@@ -14,5 +14,8 @@
   },
   "ConfigurationReader": {
     "Test": "le test :)"
+  },
+  "DummyControllerTest": {
+    "Url": "https://127.0.0.1:7443"
   }
 }
