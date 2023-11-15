@@ -56,18 +56,18 @@ if (NOT json_POPULATED)
     add_subdirectory(${json_SOURCE_DIR} ${json_BINARY_DIR})
 endif ()
 
-# libcurl
+# cpr
 FetchContent_Declare(
-        libcurl
-        GIT_REPOSITORY https://github.com/curl/curl.git
-        GIT_TAG d755a5f7c009dd63a61b2c745180d8ba937cbfeb #v.8.4.0
+        cpr
+        GIT_REPOSITORY https://github.com/libcpr/cpr.git
+        GIT_TAG 3b15fa82ea74739b574d705fea44959b58142eb8 #curl CVE-2023-38545
 )
 
-FetchContent_MakeAvailable(libcurl)
-FetchContent_GetProperties(libcurl)
-if (NOT libcurl_POPULATED)
-    FetchContent_Populate(libcurl)
-    add_subdirectory(${libcurl_SOURCE_DIR} ${libcurl_BINARY_DIR})
+FetchContent_MakeAvailable(cpr)
+FetchContent_GetProperties(cpr)
+if (NOT cpr_POPULATED)
+    FetchContent_Populate(cpr)
+    add_subdirectory(${cpr_SOURCE_DIR} ${cpr_BINARY_DIR})
 endif ()
 
 
@@ -85,7 +85,7 @@ add_executable(test
         authentication/controllers/AuthenticationControllerTest.h)
 
 
-target_link_libraries(test GTest::gtest_main api fruit Crow::Crow nlohmann_json CURL::libcurl)
+target_link_libraries(test GTest::gtest_main api fruit Crow::Crow nlohmann_json cpr::cpr)
 target_include_directories(test PRIVATE ${CMAKE_SOURCE_DIR}/src)
 
 include(GoogleTest)
