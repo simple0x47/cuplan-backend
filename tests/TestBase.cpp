@@ -46,7 +46,8 @@ core::Result<pid_t, Error> initializeNewEnvironment() {
     const std::string bashScript = composeDir + "dev.sh";
     std::cout << "dev.sh path:" + bashScript << std::endl;
 
-    execl("/bin/bash", "/bin/bash", bashScript.c_str(), composeDir.c_str());
+    execl("/bin/bash", "/bin/bash", bashScript.c_str(), composeDir.c_str(),
+          nullptr);
 
     _exit(127);
   }
@@ -54,7 +55,7 @@ core::Result<pid_t, Error> initializeNewEnvironment() {
   int scriptStatus;
   waitpid(scriptProcessId, &scriptStatus, 0);
 
-  if (!(WIFEXITED(scriptStatus) && WEXITSTATUS(scriptStatus) == 0)) {
+  if (WEXITSTATUS(scriptStatus) != 0) {
     return core::Result<pid_t, Error>::err(std::make_unique<Error>(
         Error(FAILED_TO_RUN_COMMAND, "failed to run 'dev.sh' script.")));
   }
@@ -72,7 +73,7 @@ core::Result<pid_t, Error> initializeNewEnvironment() {
         std::filesystem::current_path().parent_path();
     const std::string apiRunnerDir = buildDir.string() + "/src/apiRunner";
 
-    execl(apiRunnerDir.c_str(), apiRunnerDir.c_str());
+    execl(apiRunnerDir.c_str(), apiRunnerDir.c_str(), nullptr);
 
     _exit(127);
   }
