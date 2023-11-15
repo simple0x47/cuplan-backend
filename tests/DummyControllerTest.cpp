@@ -18,7 +18,7 @@ TEST_F(DummyControllerTest, ReceivesReplyCorrectly) {
   cpr::SslOptions sslOptions =
       cpr::Ssl(cpr::ssl::VerifyHost{false}, cpr::ssl::VerifyPeer{false},
                cpr::ssl::VerifyStatus{false});
-  cpr::Response response = cpr::Get(cpr::Url{std::move(url)}, sslOptions);
+  const cpr::Response response = cpr::Get(cpr::Url{std::move(url)}, sslOptions);
 
   ASSERT_EQ(200L, response.status_code);
   ASSERT_EQ(std::string("dummy"), response.text);
