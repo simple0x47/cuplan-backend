@@ -59,6 +59,8 @@ add_library(api STATIC core/ISecretsManager.h
         routes.h
         routes.cpp
         core/Empty.h
+        authentication/controllers/AuthenticationController.cpp
+        authentication/controllers/AuthenticationController.h
 )
 add_executable(apiRunner main.cpp)
 

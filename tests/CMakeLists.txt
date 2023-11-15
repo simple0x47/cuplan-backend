@@ -80,7 +80,9 @@ add_executable(test
         TestBase.h
         TestBase.cpp
         DummyControllerTest.cpp
-        DummyControllerTest.h)
+        DummyControllerTest.h
+        authentication/controllers/AuthenticationControllerTest.cpp
+        authentication/controllers/AuthenticationControllerTest.h)
 
 
 target_link_libraries(test GTest::gtest_main api fruit Crow::Crow nlohmann_json CURL::libcurl)
