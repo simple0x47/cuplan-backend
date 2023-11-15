@@ -15,8 +15,10 @@
   "ConfigurationReader": {
     "Test": "le test :)"
   },
-  "DummyControllerTest": {
-    "SleepWaitingForApiRunner": 1,
+  "Test": {
     "Url": "https://127.0.0.1:7443"
+  },
+  "DummyControllerTest": {
+    "SleepWaitingForApiRunner": 1
   }
 }

@@ -13,7 +13,7 @@ TEST_F(DummyControllerTest, ReceivesReplyCorrectly) {
       config["DummyControllerTest"]["SleepWaitingForApiRunner"]));
 
   std::string url =
-      std::string(config["DummyControllerTest"]["Url"]) + std::string("/dummy");
+      std::string(config["Test"]["Url"]) + std::string("/dummy");
 
   cpr::SslOptions sslOptions =
       cpr::Ssl(cpr::ssl::VerifyHost{false}, cpr::ssl::VerifyPeer{false},
